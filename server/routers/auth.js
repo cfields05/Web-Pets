@@ -53,14 +53,41 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    cb(null, {id: user.id, username: user.username, name: user.name });
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
+
 const router = express.Router();
 
-router.get('/', (req, res) => { // add 'next' here if needed
-  res.send('send login');
+router.get('/login/federated/google', passport.authenticate('google'));
+
+router.get('/oauth2/redirect/google', passport.authenticate('google', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
+
+router.post('/logout', function(req, res, next) {
+  // req.logout(function(err) {
+  //   if (err) { return next(err); }
+  //   res.redirect('/');
+  // });
+  req.session.user = null;
+  req.session.save(function(err) {
+    if (err) { return next(err); }
+
+    req.session.regenerate(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
+  });
 });
 
-//router.get('/federated/google', passport.authenticate('google'));
-router.get('/federated/google/', (req, res) => {
-  res.send('routing is working');
-});
 module.exports = router;
