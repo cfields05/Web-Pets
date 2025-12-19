@@ -63,4 +63,16 @@ router.patch('/', (req, res) => {
       res.sendStatus(404);
     });
 });
+
+// delete
+router.delete('/', (req, res) => {
+  db.Pet.findByIdAndDelete({userId: passport.user.id})
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('This pet does not exist', err);
+      res.sendStatus(404);
+    });
+});
 module.exports = router;
