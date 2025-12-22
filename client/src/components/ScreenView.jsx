@@ -6,18 +6,7 @@ const ScreenView = ({pet}) => {
  // see what pet is first - it is a pet object
 
 
- const petChecker = () => {
-    // we want to see if pet.petName is empty or not
-  if(pet.petName === '') {
-    // then we want to promt the user to create a pet
-    // which can fall in line with the submit button
 
-  } else {
-    // just show the pet data for the user - USER HAS A PET
-
-  }
- };
- petChecker();
   const handleSubmit = () => {
     axios.post('/pet', {petName: 1})
       .catch((err) => {
