@@ -33,13 +33,6 @@ const DeviceView = (props) => {
     }
   }, [props.user.name]);
 
-  // const dummyPet = () => {
-  //   axios.post('/pet', {petName: 'Comet'})
-  //     .catch((err) => {
-  //       console.error(err, 'coming from dummyPet');
-  //     });
-  // };
-  // dummyPet();
 
   const refreshSkillData = function() {
     axios.get('/training')
