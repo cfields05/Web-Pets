@@ -8,12 +8,19 @@ import DashboardView from './Dashboard/DashboardView';
 const DeviceView = (props) => {
   const [ pet, setPet ] = useState(null);
 
-  const cssTest = {
-    backgroundColor: 'pink',
-    borderRadius: '20px',
-    margin: '20px',
-    padding: '10px',
-  };
+  // const cssTest = {
+  //   backgroundColor: 'pink',
+  //   borderRadius: '20px',
+  //   margin: '20px',
+  //   padding: '10px',
+  // };
+
+  const deviceStyles = [
+    'bg-[pink]', // background color
+    'rounded-lg', // border radius
+    'm-[20px]', // margin
+    'p-[15px]', // padding
+  ];
 
   useEffect(() => {
     if (props.user.name) {
@@ -55,7 +62,7 @@ const DeviceView = (props) => {
   };
 
   return (
-    <div id="device" style={cssTest}>
+    <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
       <ScreenView pet={ pet } />
       <DashboardView

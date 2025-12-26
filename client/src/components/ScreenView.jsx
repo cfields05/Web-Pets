@@ -3,7 +3,21 @@ import React from 'react';
 import axios from 'axios';
 
 const ScreenView = ({ pet }) => {
+  const styles = {
+    screen: [ // { border: '5px inset hotpink', height: '360px', margin: '5px', backgroundColor: 'lavender' }
+      'border-5', // border width
+      'border-pink-600', // border color
+      'bg-indigo-50', // background color
+      'h-[180px]', // height
+    ],
+    input: [
+      'rounded-md', // border radius
+      'border-2', // border width
+    ]
+  };
+
   const [petName, setPetName] = useState('');
+
   const handleSubmit = () => {
     if(petName === '') {
       // if the user doesn't enter anything the button does nothing
@@ -19,13 +33,13 @@ const ScreenView = ({ pet }) => {
     if (pet !== null) {
       return (
         <div>
-          <p>{pet.petName}</p>
+          <p>{pet.name}</p>
         </div>
       );
     } else {
       return (
         <div>
-          <input type='text' value={petName} onChange={(e) => setPetName(e.target.value)}/>
+          <input className={ styles.input.join(' ') } type='text' value={petName} onChange={(e) => setPetName(e.target.value)}/>
           <button onClick={handleSubmit}>Submit</button>
         </div>
       );
@@ -34,7 +48,7 @@ const ScreenView = ({ pet }) => {
 
   // this is for if the user does not have a pet
   return (
-    <div style={{ border: '5px inset hotpink', height: '360px', margin: '5px', backgroundColor: 'lavender' }}>
+    <div className={ styles.screen.join(' ') }>
       this is the screen - kitty goes here
       {renderScreenContents()}
     </div>

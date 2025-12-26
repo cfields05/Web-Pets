@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const Status = () => {
-  const [state, setState] = useState({
+  const [status, setStatus] = useState({
     mood: 0,
     love: 0,
     health: 0
@@ -13,13 +13,9 @@ const Status = () => {
   useEffect(() => {
     // send the get request here
     axios.get('/pet')
-      .then((res) => {
+      .then(({ data: { mood, love, health, hunger }}) => {
         // so we should have one document following the session
-        setState({
-          mood: res.data.mood,
-          love: res.data.love,
-          health: res.data.health
-        });
+        setStatus({ mood, love, health, hunger });
       })
       .catch((err) => {
         console.error(err);
@@ -27,14 +23,14 @@ const Status = () => {
   });
 
 
-
-
+  const { mood, love, health, hunger } = status;
   // html
   return (
     <div>
-      <span> Mood: {state.mood} </span>
-      <span> Love: {state.love} </span>
-      <span> Health: {state.health} </span>
+      <span> Mood: {mood} </span> |
+      <span> Love: {love} </span> |
+      <span> Hunger: {hunger} </span> |
+      <span> Health: {health} </span>
     </div>
   );
 };
