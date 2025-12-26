@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
         } else {
           Pet.create({
             userId: passport.user.id,
-            petName: req.body.petName,
+            name: req.body.petName,
             training: skills.map((skill) => {
               return {
                 name: skill.category,
@@ -41,6 +41,7 @@ router.post('/', (req, res) => {
             mood: 0,
             love: 0,
             health: 100,
+            hunger: 20,
           })
             .then((pet) => {
               res.status(201).send(pet);
@@ -63,7 +64,7 @@ router.post('/', (req, res) => {
 router.patch('/', (req, res) => {
   const { passport } = req.session;
   if(passport){
-    Pet.findOneAndUpdate({ userId: passport.user.id }, {petName: req.body.petName}, {new: true})
+    Pet.findOneAndUpdate({ userId: passport.user.id }, { name: req.body.petName }, {new: true})
     .then((pet) => {
       // change the petName to the req.body.petName
       res.status(200).send(pet);
@@ -82,13 +83,13 @@ router.delete('/', (req, res) => {
   const { passport } = req.session;
   if(passport){
     Pet.findByIdAndDelete({ userId: passport.user.id })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.error('This pet does not exist', err);
-      res.sendStatus(404);
-    });
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error('This pet does not exist', err);
+        res.sendStatus(404);
+      });
   } else {
     res.redirect('/login');
   }

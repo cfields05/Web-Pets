@@ -17,12 +17,13 @@ const behaviorSchema = new mongoose.Schema({
 
 const petSchema = new mongoose.Schema({
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  petName: String,
+  name: String,
   training: [trainingSchema],
   behaviors: [behaviorSchema],
   mood: Number,
   love: Number,
-  health: Number
+  health: Number,
+  hunger: Number,
 });
 
 const Pet = mongoose.model('Pet', petSchema);
