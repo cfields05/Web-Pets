@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 
-function SkillDashboard(props) {
+function SkillDashboard({ skills, refreshSkillData }) {
   const handleClickTraining = (event) => {
     axios.patch(`/training/${event.target.name}`, {
       delta: 5
     })
-      .then(props.refreshSkillData)
+      .then(refreshSkillData)
       .catch((error) => {
         console.error(error);
       });
@@ -15,7 +15,7 @@ function SkillDashboard(props) {
   return (
     <div>
       <h4>Skill Dashboard</h4>
-      {props.skills.map((skill) => {
+      {skills.map((skill) => {
         return <div key={skill.name}>
           <p>{skill.name}</p>
           <meter max='100' value={skill.stat}></meter>

@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node --env-file=server/.env server",
-    "dev": "concurrently --kill-others 'webpack --watch' 'nodemon --env-file=server/.env server'",
+    "dev": "concurrently --kill-others 'webpack --watch' 'npm run style:dev' 'nodemon --env-file=server/.env server'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "build": "webpack",
-    "css": "npx @tailwindcss/cli -i ./client/src/input.css -o ./client/dist/output.css"
+    "style": "npx @tailwindcss/cli -i ./client/src/input.css -o ./client/dist/output.css",
+    "style:dev": "npx @tailwindcss/cli -i ./client/src/input.css -o ./client/dist/output.css --watch"
   },
   "author": "",
   "license": "UNLICENSED",

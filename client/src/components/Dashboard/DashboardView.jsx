@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 
 import Skills from './Skills';
 import Statuses from './Statuses';
-const DashboardView = (props) => {
-  const [ tab, setTab ] = useState('Skills');
+import Interactions from './Interactions';
 
+const DashboardView = ({ pet, user, refreshSkillData }) => {
+  
+  const [ tab, setTab ] = useState('Statuses');
 
-  const { pet, user } = props;
+  // const { pet, user } = props;
   const tabs = ['Statuses', 'Interactions', 'Skills'];
 
   const renderTab = () => {
@@ -15,9 +17,9 @@ const DashboardView = (props) => {
       case 'Statuses':
         return <Statuses />;
       case 'Interactions':
-        return <p>Interactions</p>;
+        return <Interactions />;
       case 'Skills':
-        return <Skills skills={pet.training} refreshSkillData={props.refreshSkillData}/>;
+        return <Skills skills={pet.training} refreshSkillData={refreshSkillData}/>;
       default:
         return null;
     }

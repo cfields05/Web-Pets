@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Pet } = require('../db');
-const skills = require('../data/skills.js');
+const { skills } = require('../data/skills.js');
 
 router.get('/', (req, res) => {
   // if user is signed in - we check the session to see if the passport exist
@@ -31,16 +31,17 @@ router.post('/', (req, res) => {
         } else {
           Pet.create({
             userId: passport.user.id,
-            petName: req.body.petName,
-            training: skills.map((skill) => {
+            name: req.body.petName,
+            training: Object.keys(skills).map((key) => {
               return {
-                name: skill.category,
+                name: key,
                 stat: 0,
               };
             }),
             mood: 0,
             love: 0,
             health: 100,
+            hunger: 20,
           })
             .then((pet) => {
               res.status(201).send(pet);
@@ -63,7 +64,7 @@ router.post('/', (req, res) => {
 router.patch('/', (req, res) => {
   const { passport } = req.session;
   if(passport){
-    Pet.findOneAndUpdate({ userId: passport.user.id }, {petName: req.body.petName}, {new: true})
+    Pet.findOneAndUpdate({ userId: passport.user.id }, { name: req.body.petName }, {new: true})
     .then((pet) => {
       // change the petName to the req.body.petName
       res.status(200).send(pet);
@@ -82,13 +83,13 @@ router.delete('/', (req, res) => {
   const { passport } = req.session;
   if(passport){
     Pet.findByIdAndDelete({ userId: passport.user.id })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.error('This pet does not exist', err);
-      res.sendStatus(404);
-    });
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error('This pet does not exist', err);
+        res.sendStatus(404);
+      });
   } else {
     res.redirect('/login');
   }
