@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function SkillDashboard({ skills, refreshSkillData }) {
+  const [skillToDelete, setSkillToDelete] = useState('');
+
   const handleClickTraining = (event) => {
     axios.patch(`/training/${event.target.name}`, {
       delta: 5
@@ -10,6 +12,19 @@ function SkillDashboard({ skills, refreshSkillData }) {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const handleDeleteTraining = () => {
+    if (skillToDelete !== '') {
+      axios.delete(`/training/${skillToDelete}`)
+        .then(() => {
+          setSkillToDelete(''); // clear the deleted skill so it can't be deleted again
+          refreshSkillData();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -22,6 +37,16 @@ function SkillDashboard({ skills, refreshSkillData }) {
           <button onClick={handleClickTraining} name={skill._id}>Train {skill.name}</button>
         </div>;
       })}
+      <h5>Change Skills</h5>
+      <p>Learn a new skill</p>
+      <p>Forget a skill</p>
+      <select onChange={(e) => setSkillToDelete(e.target.value)}>
+        <option key={'none'} value={''}>Choose a skill</option>
+        {skills.map((skill) => {
+          return <option key={skill.name} value={skill._id}>{skill.name}</option>;
+        })}
+      </select>
+      <button onClick={handleDeleteTraining}>Forget this skill</button>
     </div>
   );
 }
