@@ -135,7 +135,21 @@ const findBehaviors = (petTraining) => {
   return behaviors;
 };
 
+const findAvailableSkills = (petTraining, love) => {
+  const currentSkills = petTraining.map((skill) => skill.name);
+  const availableSkills = [];
+
+  for (let skill in skills) {
+    if (love >= skills[skill].love && !currentSkills.includes(skill)) {
+      availableSkills.push(skill);
+    }
+  }
+
+  return availableSkills;
+};
+
 module.exports = {
   skills,
-  findBehaviors
+  findBehaviors,
+  findAvailableSkills
 };

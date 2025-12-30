@@ -1,6 +1,6 @@
 const express = require('express');
 const { Pet } = require('../db');
-const { skills } = require('../data/skills');
+const { skills, findAvailableSkills } = require('../data/skills');
 
 const router = express.Router();
 
@@ -89,7 +89,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// TODO:
 // GET available skills at the pet's friendship level that it doesn't have
 router.get('/available/', (req, res) => {
   // check for authentication
@@ -99,15 +98,23 @@ router.get('/available/', (req, res) => {
     return;
   }
 
-  res.sendStatus(501);
+  // look up pet associated with the logged in user
+  Pet.findOne({ userId })
+    .then((pet) => {
+      // check that user has a pet
+      if (!pet) {
+        res.sendStatus(404);
+        return;
+      }
 
-  // look up pet
-
-    // if doesn't exist, 404
-
-    // get pet's friendship and skill list
-
-    // check against list of all skills
+      // find available skills based on pet's current stats and send
+      const availableSkills = findAvailableSkills(pet.training, pet.love);
+      res.status(200).send(availableSkills);
+    })
+    .catch((error) => {
+      console.error('Failed to GET pet\'s available skills', error);
+      res.sendStatus(500);
+    });
 });
 
 // PATCH data to update the specified skill by the delta amount for the pet belonging to the current user

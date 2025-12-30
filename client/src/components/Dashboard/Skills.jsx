@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function SkillDashboard({ skills, refreshSkillData }) {
@@ -6,8 +6,17 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const [skillToDelete, setSkillToDelete] = useState('');
   const [skillToCreate, setSkillToCreate] = useState('');
 
-  // TODO: get real data from server!
-  const testSkills = ['Scratching', 'Acrobatics', 'Litter Box', 'Hunting', 'DNE'];
+  // FOR TESTING ONLY
+  // this will eventually get moved to DeviceView and might not be necessary at all once I have a single training endpoint that does everything
+  const [availableSkills, setAvailableSkills] = useState([]);
+  const refreshAvailableSkills = function() {
+    return axios.get('/training/available')
+      .then(response => setAvailableSkills(response.data))
+      .catch((error) => console.error('failed to get available skills', error));
+  };
+  useEffect(() => {
+    refreshAvailableSkills();
+  }, []);
 
   const handleClickTraining = (event) => {
     axios.patch(`/training/${event.target.name}`, {
@@ -22,6 +31,7 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const handleDeleteSkill = () => {
     if (skillToDelete !== '') {
       axios.delete(`/training/${skillToDelete}`)
+        .then(refreshAvailableSkills)
         .then(() => {
           setSkillToDelete(''); // clear the deleted skill so it can't be deleted again
           refreshSkillData();
@@ -35,6 +45,7 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const handleCreateSkill = () => {
     if (skillToCreate !== '') {
       axios.post('/training', {skillName: skillToCreate})
+        .then(refreshAvailableSkills)
         .then(() => {
           setSkillToCreate(''); // clear the created skill so it can't be created again
           refreshSkillData();
@@ -51,7 +62,7 @@ function SkillDashboard({ skills, refreshSkillData }) {
         <p>Learn a new skill</p>
         <select onChange={(e) => setSkillToCreate(e.target.value)}>
           <option key={'none'} value={''}>Choose a skill</option>
-          {testSkills.map((skill) => {
+          {availableSkills.map((skill) => {
             return <option key={skill} value={skill}>{skill}</option>;
           })}
         </select>
