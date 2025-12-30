@@ -26,17 +26,26 @@ const App = () => {
       });
   };
 
+  const renderAuthData = () => {
+    if (name) {
+      return (
+        <div>
+          <h2>{`Currently logged in as ${name}`}</h2>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      );
+    } else {
+      return (<div>
+        <h1>Not signed in</h1>
+        <a className="button google" href="/login/federated/google">Sign in with Google</a>
+      </div>);
+    }
+  };
 
   const { name } = user;
   return (
     <div>
-      <h1>Rendering</h1>
-      <h2>{ name ? `Currently logged in as ${name}` : 'Please sign in!' }</h2>
-      <button onClick={handleLogout}>Logout</button>
-      <div>
-        <h1>Sign in</h1>
-        <a className="button google" href="/login/federated/google">Sign in with Google</a>
-      </div>
+      {renderAuthData()}
       <DeviceView user={user}/>
     </div>
   );

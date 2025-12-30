@@ -5,7 +5,7 @@ import axios from 'axios';
 import ScreenView from './ScreenView';
 import DashboardView from './Dashboard/DashboardView';
 
-const DeviceView = (props) => {
+const DeviceView = ({user}) => {
   const [ pet, setPet ] = useState(null);
 
   // const cssTest = {
@@ -75,10 +75,10 @@ const DeviceView = (props) => {
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
-      <ScreenView pet={ pet } />
+      <ScreenView pet={ pet } user = {user} />
       <DashboardView
         pet={pet}
-        user={props.user}
+        user={user}
         refreshSkillData={refreshSkillData}
         refreshPet={refreshPet}
       />
