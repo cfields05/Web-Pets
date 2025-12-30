@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 
-const ScreenView = ({ pet, user }) => {
+const ScreenView = ({ pet, user, message }) => {
   const styles = {
     screen: [ // { border: '5px inset hotpink', height: '360px', margin: '5px', backgroundColor: 'lavender' }
       'border-5', // border width
@@ -51,7 +51,7 @@ const ScreenView = ({ pet, user }) => {
   // this is for if the user does not have a pet
   return (
     <div className={ styles.screen.join(' ') }>
-      this is the screen - kitty goes here
+      {message}
       {renderScreenContents()}
     </div>
   );

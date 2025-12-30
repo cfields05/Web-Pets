@@ -7,8 +7,9 @@ import DashboardView from './Dashboard/DashboardView';
 
 const DeviceView = ({user}) => {
   const [ pet, setPet ] = useState(null);
-  const [availableSkills, setAvailableSkills] = useState([]);
-  const [behaviors, setBehaviors] = useState([]);
+  const [ message, setMessage ] = useState('');
+  const [ availableSkills, setAvailableSkills ] = useState([]);
+  const [ behaviors, setBehaviors ] = useState([]);
 
   // const cssTest = {
   //   backgroundColor: 'pink',
@@ -72,6 +73,15 @@ const DeviceView = ({user}) => {
       });
   };
 
+  const displayMessage = function(message) {
+    setMessage(message);
+  };
+
+  // the skills dashboard doesn't actually have access to the pet's name
+  const behaviorMessage = function(behavior) {
+    displayMessage(`${pet.name} ${behavior}`);
+  };
+
   // add a delete button
   const deletePet = () => {
     axios.delete('/pet')
@@ -92,12 +102,13 @@ const DeviceView = ({user}) => {
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
-      <ScreenView pet={ pet } user = {user} />
+      <ScreenView pet={ pet } user = {user} message={message}/>
       <DashboardView
         pet={pet}
         user={user}
         availableSkills={availableSkills}
         behaviors={behaviors}
+        behaviorMessage={behaviorMessage}
         refreshSkillData={refreshSkillData}
         refreshPet={refreshPet}
       />
