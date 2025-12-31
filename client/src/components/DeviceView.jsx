@@ -85,6 +85,9 @@ const DeviceView = ({user}) => {
   // add a delete button
   const deletePet = () => {
     axios.delete('/pet')
+      .then(() => {
+        refreshPet();
+      })
       .catch((err) => {
         console.error(err);
       });
@@ -94,6 +97,9 @@ const DeviceView = ({user}) => {
   // update petname
   const changePetName = () => {
     axios.patch('/pet', {name})
+      .then(() => {
+        refreshPet();
+      })
       .catch((err) => {
         console.error(err);
       });
@@ -102,7 +108,7 @@ const DeviceView = ({user}) => {
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
-      <ScreenView pet={ pet } user = {user} message={message}/>
+      <ScreenView pet={ pet } user = {user} message={message} refreshPet={refreshPet}/>
       <DashboardView
         pet={pet}
         user={user}

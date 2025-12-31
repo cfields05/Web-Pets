@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 
-const ScreenView = ({ pet, user, message }) => {
+const ScreenView = ({ pet, user, message , refreshPet}) => {
   const styles = {
     screen: [ // { border: '5px inset hotpink', height: '360px', margin: '5px', backgroundColor: 'lavender' }
       'border-5', // border width
@@ -22,9 +22,12 @@ const ScreenView = ({ pet, user, message }) => {
       // if the user doesn't enter anything the button does nothing
       return;
     }
-    axios.post('/pet', { name }) // fix
+    axios.post('/pet', { name })
+      .then(() => {
+        refreshPet();
+      })
       .catch((err) => {
-        console.error(err, 'coming from dummyPet');
+        console.error(err, 'coming from screenView');
       });
   };
 
