@@ -56,17 +56,17 @@ const DeviceView = ({user}) => {
 
   const refreshSkillData = function(updateTrainingData = true) {
     axios.get('/training/')
-      .then(({ data }) => {
+      .then(({ data: { training, available, behaviors } }) => {
         // if the whole pet object has just been fetched, (e.g. on login),
         // there's no need to update pet.training and risk some sort of state conflict
         if (updateTrainingData) {
           setPet({
             ...pet,
-            training: data.training
+            training
           });
         }
-        setAvailableSkills(data.available);
-        setBehaviors(data.behaviors);
+        setAvailableSkills(available);
+        setBehaviors(behaviors);
       })
       .catch((error) => {
         console.error('Failed to get pet skill data:', error);
