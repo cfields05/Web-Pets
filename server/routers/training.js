@@ -4,7 +4,16 @@ const { skills, findBehaviors, findAvailableSkills } = require('../data/skills')
 
 const router = express.Router();
 
-// GET stats, behaviors, and skills available to be learned for the pet belonging to the current user
+/**
+ * @module trainingRouter
+ */
+
+/**
+ * GET stats, behaviors, and skills available to be learned for the pet belonging to the current user.
+ * This is designed to avoid making multiple requests when updating skill data on the client
+ * @name GET /training
+ * @function
+ */
 router.get('/', (req, res) => {
   // check for authentication
   const userId = req.session.passport?.user?.id;
@@ -37,7 +46,11 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET all skill levels (but not behaviors) for the pet belonging to the current user
+/**
+ * GET all skill levels (but not behaviors) for the pet belonging to the current user
+ * @name GET /training/stats
+ * @function
+ */
 router.get('/stats', (req, res) => {
   const userId = req.session.passport?.user?.id;
 
@@ -60,7 +73,12 @@ router.get('/stats', (req, res) => {
     });
 });
 
-// POST a newly unlocked skill to add to the pet belonging to the current user
+/**
+ * POST a newly unlocked skill to add to the pet belonging to the current user
+ * @name POST /training/
+ * @function
+ * @param {String} skillName - [body parameter] the name of the skill to add to the pet
+ */
 router.post('/', (req, res) => {
   // check for authentication
   const userId = req.session.passport?.user?.id;
@@ -108,7 +126,11 @@ router.post('/', (req, res) => {
     });
 });
 
-// GET available skills at the pet's friendship level that it doesn't have
+/**
+ * GET available skills at the pet's friendship level that it doesn't have
+ * @name GET /training/available
+ * @function
+ */
 router.get('/available/', (req, res) => {
   // check for authentication
   const userId = req.session.passport?.user?.id;
@@ -136,7 +158,13 @@ router.get('/available/', (req, res) => {
     });
 });
 
-// PATCH data to update the specified skill by the delta amount for the pet belonging to the current user
+/**
+ * PATCH data to update the specified skill by the delta amount for the pet belonging to the current user
+ * @name PATCH /training/:id
+ * @function
+ * @param {ObjectId} id - [path parameter] the id of the skill to update
+ * @param {Number} delta - [body parameter] the amount to change the skill level by (accepts negative numbers)
+ */
 router.patch('/:id', (req, res)=> {
   // check for authentication
   const userId = req.session.passport?.user?.id;
@@ -184,7 +212,12 @@ router.patch('/:id', (req, res)=> {
     });
 });
 
-// DELETE a skill to remove it from the pet
+/**
+ * DELETE a skill to remove it from the pet
+ * @name DELETE /training/:id
+ * @function
+ * @param {ObjectId} id - (path parameter) the id of the skill to remove
+ */
 router.delete('/:id', (req, res) => {
   // check for authentication
   const userId = req.session.passport?.user?.id;
@@ -218,7 +251,11 @@ router.delete('/:id', (req, res) => {
 
 });
 
-// GET behaviors available to a pet
+/**
+ * GET behaviors available to a pet
+ * @name GET /behavior
+ * @function
+ */
 router.get('/behavior', (req, res) => {
   // check for authentication
   const userId = req.session.passport?.user?.id;
