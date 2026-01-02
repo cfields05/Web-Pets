@@ -50,12 +50,21 @@ const ScreenView = ({ pet, user, message , initPet}) => {
     }
   };
 
+  const chooseImage = () => {
+    //TODO: choose gif variants based on weather
+    if (pet === null) {
+      return '/noPet.png';
+    } else {
+      return '/sunny.gif';
+    }
+  }
+
   // this is for if the user does not have a pet
   return (
     <div className={ styles.screen.join(' ') }>
       {message}
       {renderScreenContents()}
-      <img src="/sunny.gif" className="w-[600px] h-[300px]" style={{"imageRendering": "pixelated"}}/>
+      <img src={chooseImage()} className="w-[600px] h-[300px]" style={{"imageRendering": "pixelated"}}/>
     </div>
   );
 };
