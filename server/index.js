@@ -9,6 +9,7 @@ const petRouter = require('./routers/pet.js');
 const trainingRouter = require('./routers/training');
 const interactRouter = require('./routers/interaction.js');
 const weatherRouter = require('./routers/weather.js');
+const initRouter = require('./routers/init');
 
 const app = express();
 const port = 8080;
@@ -34,6 +35,7 @@ app.use('/pet', petRouter);
 app.use('/interact', interactRouter);
 app.use('/weather', weatherRouter);
 app.use('/training', trainingRouter);
+app.use('/init', initRouter);
 
 app.listen(port, () => {
   console.info(`App available on http://localhost:${port} or http://127.0.0.1:${port}`);
