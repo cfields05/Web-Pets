@@ -25,23 +25,40 @@ const DeviceView = ({user}) => {
     'p-[15px]', // padding
   ];
 
+  const initPet = () => {
+    if (user.name) {
+      axios.get('/init')
+        .then(({ data }) => {
+          //TODO: add weather data once finished
+          if (!data) {
+            setPet(null);
+            setBehaviors([]);
+            setAvailableSkills([]);
+          } else {
+            const { pet, behaviors, available } = data;
+            setPet(pet);
+            setBehaviors(behaviors);
+            setAvailableSkills(available);
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to GET initial pet data:', error);
+        });
+    } else {
+      setPet(null);
+      setBehaviors([]);
+      setAvailableSkills([]);
+    }
+  };
+
   const refreshPet = () => {
     if (user.name) {
-      let petExists = false;
       axios.get('/pet')
       .then(({ data }) => {
         if(!data) {
           setPet(null);
         } else {
           setPet(data);
-          petExists = true;
-        }
-      })
-      .then(() => {
-        if (petExists) { // if no pet exists, this would return a 404
-          // but it's not safe to use the state variable yet
-          // so just a flag to check if it's worth getting behaviors/available
-          refreshSkillData(false);
         }
       })
       .catch(err => {
@@ -52,7 +69,7 @@ const DeviceView = ({user}) => {
     }
   };
 
-  useEffect(refreshPet, [user.name]);
+  useEffect(initPet, [user.name]);
 
   const refreshSkillData = function(updateTrainingData = true) {
     axios.get('/training/')
@@ -108,7 +125,12 @@ const DeviceView = ({user}) => {
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
-      <ScreenView pet={ pet } user = {user} message={message} refreshPet={refreshPet}/>
+      <ScreenView
+        pet={ pet }
+        user = {user}
+        message={message}
+        initPet={initPet}
+      />
       <DashboardView
         pet={pet}
         user={user}

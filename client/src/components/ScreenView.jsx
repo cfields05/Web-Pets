@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 
-const ScreenView = ({ pet, user, message , refreshPet}) => {
+const ScreenView = ({ pet, user, message , initPet}) => {
   const styles = {
     screen: [ // { border: '5px inset hotpink', height: '360px', margin: '5px', backgroundColor: 'lavender' }
       'border-5', // border width
@@ -24,7 +24,7 @@ const ScreenView = ({ pet, user, message , refreshPet}) => {
     }
     axios.post('/pet', { name })
       .then(() => {
-        refreshPet();
+        initPet();
       })
       .catch((err) => {
         console.error(err, 'coming from screenView');
