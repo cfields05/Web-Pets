@@ -6,7 +6,7 @@ import axios from 'axios';
  * @description A component that displays and interacts with the pet's skills.
  * Allows the user to view the pet's current skill levels, to train a skill, to learn a new skill, and to forget existing skills.
  */
-function Skills({ skills, availableSkills, behaviors, behaviorMessage, refreshSkillData }) {
+function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, refreshSkillData }) {
   /**
    * A state variable that controls the rendering of the skill change menu. Toggled by clicking the 'Change Skills' heading.
    * @type {boolean}
@@ -39,7 +39,7 @@ function Skills({ skills, availableSkills, behaviors, behaviorMessage, refreshSk
     const behavior = possibleBehaviors[Math.floor(Math.random() * possibleBehaviors.length)];
     behaviorMessage(behavior); // display message on screen describing what the cat did
     axios.patch(`/training/${event.target.name}`, {
-      delta: 5
+      delta: 1 + Math.floor(mood / 25)
     })
       .then(refreshSkillData)
       .catch((error) => {
