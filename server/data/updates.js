@@ -22,25 +22,22 @@ twelveOClock.setDate(twelveOClock.getDate() + 1);
 
 const updateAllPets = () => {
   Pet.find()
-  .then(pets => {
-    pets.forEach(pet => {
-      const { min, max } = Math;
-      const { health, hunger, mood, love } = pet;
-      const newStats = {
-        health: max(min(health + 0.4 * hunger - 30, 100), 0),
-        hunger: max(hunger - 50, 0),
-        mood: max(min(mood, health, hunger), 0),
-        love: max(min(love + 0.2 * min(mood, health, hunger) - 10, 100), 0),
-      };
+    .then(pets => {
+      pets.forEach(pet => {
+        const { min, max } = Math;
+        const { health, hunger, mood, love } = pet;
+        const newStats = {
+          health: max(min(health + 0.4 * hunger - 30, 100), 0),
+          hunger: max(hunger - 50, 0),
+          mood: max(min(mood, health, hunger), 0),
+          love: max(min(love + 0.2 * min(mood, health, hunger) - 10, 100), 0),
+        };
 
-      Pet.findByIdAndUpdate(pet._id, newStats, { new: true })
-        .then((newPet) => {
-          console.log(newPet);
-        })
-        .catch(err => {
-          console.error('Unable to update a pet in database from updates: ', err);
-        });
-    });
+        Pet.findByIdAndUpdate(pet._id, newStats, { new: true })
+          .catch(err => {
+            console.error('Unable to update a pet in database from updates: ', err);
+          });
+      });
   })
   .catch(err => {
     console.error('Could not retrieve all pets in updates attempt: ', err);
@@ -50,7 +47,6 @@ const updateAllPets = () => {
 const handleTimer = () => {
   if (new Date() - twelveOClock >= 0) {
     updateAllPets();
-    // twelveOClock = new Date(new Date().toDateString() + ' 09:55');
     twelveOClock.setDate(twelveOClock.getDate() + 1);
     console.log(twelveOClock);
     handleTimer();
