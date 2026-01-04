@@ -10,13 +10,11 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
   const [ tab, setTab ] = useState('Statuses');
 
   // const { pet, user } = props;
-  const tabs = ['Statuses', 'Interactions', 'Skills'];
+  const tabs = ['Interactions', 'Skills'];
 
   const renderTab = () => {
     if (pet) {
       switch (tab) {
-        case 'Statuses':
-          return <Statuses pet={pet}/>;
         case 'Interactions':
           return <Interactions pet={ pet } refreshPet={refreshPet} />;
         case 'Skills':
@@ -38,6 +36,13 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
     }
   };
 
+  const onlyStatus = () => {
+    if(pet) {
+      return <Statuses pet={pet} />;
+    }
+  };
+
+
   const handleTabSelect = (event) => {
     setTab(event.target.name);
   };
@@ -46,7 +51,8 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
   return (
     <div style={{ border: '1px solid black', marginTop: '5px' }}>
       <p>
-        folder thing goes here
+        Pet Status:
+        {onlyStatus()}
       </p>
       <span>
         {tabs.map((tabName) => {
