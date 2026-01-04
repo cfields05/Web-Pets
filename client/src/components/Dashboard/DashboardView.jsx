@@ -7,7 +7,7 @@ import Interactions from './Interactions';
 
 const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage, refreshSkillData, refreshPet }) => {
   
-  const [ tab, setTab ] = useState('Statuses');
+  const [ tab, setTab ] = useState('Interactions');
 
   // const { pet, user } = props;
   const tabs = ['Interactions', 'Skills'];
