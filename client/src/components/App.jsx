@@ -74,11 +74,12 @@ const App = () => {
    * @function
    */
   const renderAuthData = () => {
-    const { name } = user;
+    const { name, petsAdopted = 0, petsDisappeared = 0 } = user;
     if (name) {
       return (
         <div>
           <h2>{`Currently logged in as ${name}`}</h2>
+          <p>You have adopted {petsAdopted} pet{petsAdopted === 1 ? '' : 's'} and lost {petsDisappeared} pet{petsDisappeared === 1 ? '' : 's'}.</p>
           <button onClick={handleLogout}>Logout</button>
         </div>
       );
