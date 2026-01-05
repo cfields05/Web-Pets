@@ -26,6 +26,12 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
    */
   const [skillToCreate, setSkillToCreate] = useState('');
 
+  const skillTabStyles = [
+    'border-2',
+    'border-black',
+    'p-[10px]',
+  ];
+
   /**
    * Controls what happens when the user trains a specific skill. One of the possible behaviors for that skill is chosen at random and a message is sent to the screen
    * to describe what the pet does. A request is sent to the server to update the pet's skill level in the database, and a skill refresh is triggered.
@@ -128,7 +134,7 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
   };
 
   return (
-    <div>
+    <div className={skillTabStyles.join(' ')}>
       <h4>Skill Dashboard</h4>
       {skills.map((skill) => {
         return <div key={skill.name}>
