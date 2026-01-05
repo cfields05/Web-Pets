@@ -143,7 +143,7 @@ const ScreenView = ({ pet, user, message, initPet, refreshUserStats}) => {
  * @name renderingScreen
  */
   return (
-    <div className={ styles.screen.join(' ')} style={{"border-style": "inset"}}>
+    <div className={ styles.screen.join(' ')} style={{"borderStyle": "inset"}}>
       <img src={chooseImage()} className="w-full" style={{"imageRendering": "pixelated"}}/>
       <div className="bg-[#333032] text-white h-[4.5rem]">
         <p className="h-[1.5rem]">{message}</p>
