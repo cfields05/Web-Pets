@@ -195,16 +195,30 @@ const DeviceView = ({user, refreshUserStats}) => {
 
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
-      <div className="relative">
-        <div className="absolute right-[50px] bottom-[-29px]">
-          <button onClick={deletePet}>Delete Pet</button>
-          <div>
-            <input type='text' value={name} onChange={(e) => setName(e.target.value)}/>
-            <button onClick={changePetName}>Submit</button>
+      <div className="relative h-[65px]">
+        <div className="absolute right-[50px] bottom-[-23px] flex flex-col gap-3">
+          <div className="flex itmes-center gap-2">
+            <input type='text'
+            value={name}
+            className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:'text-body'"
+            placeholder='Change pet name'
+            onChange={(e) => setName(e.target.value)}/>
+            <button
+            onClick={changePetName}
+            className="text-black bg-blue box-border border border-black hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none"
+            >
+              Submit
+              </button>
           </div>
+          <button
+          onClick={deletePet}
+          className="text-black bg-blue box-border border border-black hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none"
+          >
+            Delete Pet</button>
+
         </div>
       </div>
-      this is the device :D
+      Web Pets
       <ScreenView
         pet={ pet }
         user = {user}
