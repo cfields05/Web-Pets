@@ -28,7 +28,11 @@ const App = () => {
   useEffect(() => {
     axios.get('/user')
       .then(({ data }) => {
-        setUser({ name: data });
+        if (data !== null) {
+          setUser(data);
+        } else {
+          setUser({name: null});
+        }
       })
       .catch(err => {
         console.error('Could not get user from client: ', err);
@@ -51,13 +55,38 @@ const App = () => {
   };
 
   /**
+   * Handles requesting updated stats for the user (without overwriting the user's name).
+   * @name refreshUserStats
+   * @function
+   */
+  const refreshUserStats = function() {
+    axios.get('/user/stats')
+      .then(({ data }) => {
+        if (data !== null) {
+          const { petsAdopted, petsDisappeared, status } = data;
+          setUser({
+            ...user,
+            petsAdopted,
+            petsDisappeared,
+            status
+          });
+        } else {
+          setUser({name: null});
+        }
+      })
+      .catch(err => {
+        console.error('Could not get user from client: ', err);
+      });
+  };
+
+  /**
    * Sends a request to the server to trigger a pet update now instead of waiting for midnight. Strictly for debugging/demo.
    * Note that this deliberately does not trigger a refresh of the page - the server doesn't actually wait until all pets are updated
    * to send the response, so refreshing immediately might get stale data.
-   * @name handleForcedUpdate
+   * @name forceServerUpdate
    * @function
    */
-  const handleForcedUpdate = function() {
+  const forceServerUpdate = function() {
     axios.post('/interact/updatenow')
       .catch((error) => {
         console.error('Failed to trigger server refresh:', error);
@@ -70,11 +99,12 @@ const App = () => {
    * @function
    */
   const renderAuthData = () => {
-    const { name } = user;
+    const { name, petsAdopted = 0, petsDisappeared = 0 } = user;
     if (name) {
       return (
         <div>
           <h2>{`Currently logged in as ${name}`}</h2>
+          <p>You have adopted {petsAdopted} pet{petsAdopted === 1 ? '' : 's'} and lost {petsDisappeared} pet{petsDisappeared === 1 ? '' : 's'}.</p>
           <button onClick={handleLogout}>Logout</button>
         </div>
       );
@@ -89,8 +119,8 @@ const App = () => {
   return (
     <div>
       {renderAuthData()}
-      <button onClick={handleForcedUpdate}>Update Now</button>
-      <DeviceView user={user}/>
+      <button onClick={forceServerUpdate}>Update Now</button>
+      <DeviceView user={user} refreshUserStats={refreshUserStats}/>
     </div>
   );
 };

@@ -50,10 +50,10 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
   // TODO: display "off" dashboard when logged out instead of displaying nothing
   return (
     <div style={{ border: '1px solid black', marginTop: '5px' }}>
-      <p>
+      <div>
         Pet Status:
         {onlyStatus()}
-      </p>
+      </div>
       <span>
         {tabs.map((tabName) => {
           return <button name={tabName} onClick={handleTabSelect} key={tabName}>{tabName}</button>;

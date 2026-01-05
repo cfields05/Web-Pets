@@ -17,8 +17,20 @@ const { Pet, User, Weather } = require('../db');
   * All values should be constrained between 0 and 100. At 0 health the pet dies, and at 100 love it moves in with you.
 */
 
-let twelveOClock = new Date(`${new Date().toDateString()} 12:00 AM`);
-twelveOClock.setDate(twelveOClock.getDate() + 1);
+// compute the correct time based on the UPDATE_AT environment variable
+const updateHour = parseInt(process.env['UPDATE_AT']);
+let hour = updateHour % 12;
+if (hour === 0) {
+  hour = 12; // want 12 AM / PM rather than 0 AM/PM
+}
+const AMPM = updateHour >= 12 ? 'PM' : 'AM';
+
+let nextUpdateAt = new Date(`${new Date().toDateString()} ${hour}:00 ${AMPM}`);
+
+// ensure the update is in the future - don't want to update at server (re)start before users have a chance to care for their pets
+if (new Date() - nextUpdateAt >= 0) {
+  nextUpdateAt.setDate(nextUpdateAt.getDate() + 1);
+}
 
 const oneHour = 60 * 60 * 1000;
 
@@ -67,7 +79,7 @@ const updateAllPets = () => {
         } else {
           Pet.findByIdAndUpdate(pet._id, newStats, { new: true })
             .then(() => {
-              User.findByIdAndUpdate({status: 'normal'});
+              User.findByIdAndUpdate({status: 'befriending'});
             })
             .catch(err => {
               console.error('Unable to update a pet in database from updates: ', err);
@@ -100,9 +112,9 @@ const clearWeatherCache = () => {
 };
 
 const handleTimer = () => {
-  if (new Date() - twelveOClock >= 0) {
+  if (new Date() - nextUpdateAt >= 0) {
     updateAllPets();
-    twelveOClock.setDate(twelveOClock.getDate() + 1);
+    nextUpdateAt.setDate(nextUpdateAt.getDate() + 1);
     clearWeatherCache();
     handleTimer();
   }

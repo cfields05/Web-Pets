@@ -10,7 +10,7 @@ import DashboardView from './Dashboard/DashboardView';
  * @description The component that controls most of the game client-side. It handles fetching and storing
  * pet data and passing data down to subcomponents.
 */
-const DeviceView = ({user}) => {
+const DeviceView = ({user, refreshUserStats}) => {
   /**
    * A state variable that holds all pet data returned from the server.
    * @type {object}
@@ -210,6 +210,7 @@ const DeviceView = ({user}) => {
         user = {user}
         message={message}
         initPet={initPet}
+        refreshUserStats={refreshUserStats}
       />
       <DashboardView
         pet={pet}

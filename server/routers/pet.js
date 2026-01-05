@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { Pet } = require('../db');
+const { Pet, User } = require('../db');
 const { skills } = require('../data/skills.js');
 
-/** 
+/**
  * @module pet-routers
  * @description
  * This file holds the request handling for when a user sends a request to the express server.
@@ -69,7 +69,11 @@ router.post('/', (req, res) => {
             hunger: 20,
           })
             .then((pet) => {
-              res.status(201).send(pet);
+              // update the status on the User object that tells the client whether to show an endgame image or not
+              return User.findByIdAndUpdate(passport.user.id, {status: 'befriending'})
+                .then(() => {
+                  res.status(201).send(pet);
+                });
             })
             .catch((err) => {
               console.error(err);
